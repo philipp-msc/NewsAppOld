@@ -1,0 +1,49 @@
+>>> from newapp.models import *
+>>> u1 = User.objects.create_user(username='User_1')
+>>> u2 = User.objects.create_user(username='User_2')
+>>> Author.objects.create(authorUser=u1)
+>>> Author.objects.create(authorUser=u2)
+>>> Category.objects.create(name='Politics')
+>>> Category.objects.create(name='Economics')
+>>> Category.objects.create(name='Culture')
+>>> Category.objects.create(name='Science')
+>>> author_1 = Author.objects.get(id=1)
+>>> author_2 = Author.objects.get(id=2)
+>>> Post.objects.create(author=author_1, categoryType='NW', title='Breaking news 1', text='it is the breaking news 1')
+>>> Post.objects.create(author=author_1, categoryType='AR', title='Shocking article 1', text='it is the shocking article 1')
+>>> Post.objects.create(author=author_2, categoryType='AR', title='Shocking article 2', text='it is the shocking article 2')
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=2))
+>>> Post.objects.get(id=2).postCategory.add(Category.objects.get(id=3))
+>>> Post.objects.get(id=3).postCategory.add(Category.objects.get(id=4))
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text="author's comment")
+>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text="author's 2 comment")
+>>> Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=1).authorUser, text="author's  comment 2")
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=2).authorUser, text="author's 2 comment 2")
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=3).dislike()
+>>> Comment.objects.get(id=4).dislike()
+>>> Comment.objects.get(id=4).dislike()
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).like()
+>>> Author.objects.get(id=1).update_rating()
+>>> Author.objects.get(id=2).update_rating()
+>>> best_author = Author.objects.order_by('ratingAuthor')[:1]
+>>> best_post = Post.objects.order_by('-rating')[:1]
+>>> for i in best_post:
+...     i.author
+...     i.rating
+...     i.title
+...     i.preview()
+...     i.dateCreation
+>>> comments = Post.objects.get(id=3).comment_set.all()
+>>> for i in comments:
+...     i.dateCreation
+...     i.rating
+...     i.commentUser
+...     i.text
